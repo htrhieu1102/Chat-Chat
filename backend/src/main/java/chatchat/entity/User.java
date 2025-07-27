@@ -13,6 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
+@Table(name = "users")
 public class User {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +23,11 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role roles;
+
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 
