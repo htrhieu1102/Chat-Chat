@@ -31,13 +31,6 @@ public class Conversation {
     private int id;
     private String name;
     private boolean isGroup;
-    @ManyToMany
-    @JoinTable(
-        name = "conversation_user", 
-        joinColumns = @JoinColumn(name = "conversation_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> users;
 
     @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Message> message;
