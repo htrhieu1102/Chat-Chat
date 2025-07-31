@@ -1,9 +1,12 @@
 package chatchat.service;
 
+import java.util.List;
+
 import chatchat.entity.Conversation;
+import chatchat.entity.User;
 
 public interface ConversationService {
     Conversation getConversationById(int id);
-    void createConversation(Conversation conversation);
+    void saveConversation(List<Integer> userIds);
 
 }

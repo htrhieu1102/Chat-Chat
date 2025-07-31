@@ -51,12 +51,10 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         // TODO: process POST request
         try {
-            System.out.println(encoder.matches("123", "$2a$10$XMIxkE.bVl.k/Oe1nRN63u67Ox4HxSI4XaFWxWtuzRHLgL7W.9z2y"));
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
-                                System.out.println("oke");
-
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            System.out.println(SecurityContextHolder.getContext().getAuthentication());
             String token = jwtUtils.generateToken(authentication);
             return ResponseEntity.ok(Collections.singletonMap("token", token));
         } catch (Exception e) {
@@ -75,6 +73,7 @@ public class AuthController {
         user.setPassword(encoder.encode(user.getPassword()));
         user.setRoles(roleRepository.findByName("USER"));
         user.setCreateAt(LocalDateTime.now());
+        
         userRepository.save(user);
         return ResponseEntity.ok(Collections.singletonMap("account", user));
     }
