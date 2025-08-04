@@ -7,6 +7,6 @@ import chatchat.entity.User;
 
 public interface ConversationService {
     Conversation getConversationById(int id);
-    void saveConversation(List<Integer> userIds);
+    Conversation saveConversation(List<Integer> userIds);
 
 }

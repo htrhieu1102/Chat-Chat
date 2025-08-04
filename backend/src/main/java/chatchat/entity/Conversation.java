@@ -3,6 +3,8 @@ package chatchat.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,7 +25,7 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "conversationUsers")
 @Table(name = "conversations")
 public class Conversation {
     @Id
@@ -33,7 +35,12 @@ public class Conversation {
     private boolean isGroup;
 
     @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<ConversationUser> conversationUsers;
+
+    @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Message> message;
+
     
     private LocalDateTime createAt;
     private LocalDateTime updateAt;

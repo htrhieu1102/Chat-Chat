@@ -34,6 +34,7 @@ public class ConversationUser {
     @ManyToOne
     @JoinColumn(name = "consersation_id")
     private Conversation conversation;
+    
     private String roleInConversation;
     private LocalDateTime deleteTime;
     private boolean muted = false;

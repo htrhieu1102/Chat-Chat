@@ -37,7 +37,8 @@ public class ConversationServiceImpl implements ConversationService {
     }
 
     @Override
-    public void saveConversation(List<Integer> userIds) {
+    public Conversation saveConversation(List<Integer> userIds) {
+        // get user from authentication
         Authentication authentication;
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -47,11 +48,20 @@ public class ConversationServiceImpl implements ConversationService {
         } catch (Exception e) {
             throw new AccessDeniedException("Failed to get authentication");
         }
-        System.out.println(authentication.getName());
+        
         User user = userRepository.findByUsername(authentication.getName());
-        System.out.println(user);
         boolean isGroup = userIds.size() > 1;
+        // get users from list ids
         List<User> users = userRepository.findAllById(userIds);
+
+        // if the private conversation is exists, will not create a new conversation
+        if (!isGroup) {
+            User user2 = users.get(0);
+            Conversation privateConversation = conversationRepository.findPrivateConversationBetween(user, user2);
+            if (privateConversation != null) {
+                return privateConversation;
+            }
+        }
 
         Conversation conversation = new Conversation();
         conversation.setGroup(isGroup);
@@ -64,7 +74,7 @@ public class ConversationServiceImpl implements ConversationService {
         fistOne.setConversation(saveConversation);
         if (isGroup)
             fistOne.setRoleInConversation("ADMIN");
-        conversationUserRepository.save(fistOne);
+            conversationUserRepository.save(fistOne);
         for (int i = 0; i < users.size(); i++) {
             ConversationUser conversationUser = new ConversationUser();
             conversationUser.setUser(users.get(i));
@@ -73,6 +83,7 @@ public class ConversationServiceImpl implements ConversationService {
             if (isGroup)
                 fistOne.setRoleInConversation("MEMBER");
         }
+        return saveConversation;
 
     }
 

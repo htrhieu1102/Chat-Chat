@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import chatchat.entity.Conversation;
 import chatchat.service.ConversationService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,8 +27,8 @@ public class ConversationController {
     @PostMapping("/create-new-conversation")
     public ResponseEntity<?> createNewConversation(@RequestBody List<Integer> userIds) {
         //TODO: process POST request
-        conversationService.saveConversation(userIds);
-        return ResponseEntity.ok("Conversation is creates successful");
+        Conversation conversation = conversationService.saveConversation(userIds);
+        return ResponseEntity.ok("Conversation is creates successful\n" + conversation);
     }
     
 
